@@ -1,5 +1,5 @@
 # Tactical RPG movement
-
+The following is from a GDQuest tutorial I used to familiarize myself with the logic and use as a template to build off of.
 ![](images/trpg-screenshot.png)
 
 This demo and intermediate-level tutorial shows how to code a grid-based movement as in games like Fire Emblem or Advance Wars.
