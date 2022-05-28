@@ -94,14 +94,6 @@ func _ready() -> void:
 		# moving the unit.
 		curve = Curve2D.new()
 
-		var points := [
-		Vector2(2, 2),
-		Vector2(2, 5),
-		Vector2(8, 5),
-		Vector2(8, 7),
-		]
-		walk_along(PoolVector2Array(points))
-
 # When active, moves the unit along its `curve` with the help of the PathFollow2D node.
 func _process(delta: float) -> void:
 	# Every frame, the `PathFollow2D.offset` property moves the sprites along the `curve`.
