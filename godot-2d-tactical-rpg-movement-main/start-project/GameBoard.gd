@@ -29,6 +29,8 @@ var _walkable_cells := []
 
 onready var _unit_path: UnitPath = $UnitPath
 
+onready var _context_menu: ContextMenu = $ContextMenu
+
 # At the start of the game, we initialize the game board. Look at the `_reinitialize()` function below.
 # It populates our `_units` dictionary.
 func _ready() -> void:
@@ -54,6 +56,7 @@ func _reinitialize() -> void:
 		# As mentioned when introducing the units variable, we use the grid coordinates for the key
 		# and a reference to the unit for the value. This allows us to access a unit given its grid coordinates
 		_units[unit.cell] = unit
+
 
 # Returns an array of cells a given unit can walk using the flood fill algorithm.
 func get_walkable_cells(unit: Unit) -> Array:
@@ -143,21 +146,28 @@ func _clear_active_unit() -> void:
 # Updates the _units dictionary with the target position for the unit and asks the _active_unit to
 # walk to it.
 func _move_active_unit(new_cell: Vector2) -> void:
-	if is_occupied(new_cell) or not new_cell in _walkable_cells:
+	# TODO: if is_occupied => new action menu window (still needs to be created)
+	if is_occupied(new_cell):
+		var target_unit = _units[new_cell]
+		_context_menu._popup_menu._target_unit = target_unit
+		_context_menu._open_popup()
+	if not new_cell in _walkable_cells:
 		return
 
-	# When moving a unit, we need to update our `_units` dictionary. We instantly save it in the
-	# target cell even if the unit itself will take time to walk there.
-	# While it's walking, the player won't be able to issue new commands.
-	_units.erase(_active_unit.cell)
-	_units[new_cell] = _active_unit
+	if _active_unit.is_player:
+		# When moving a unit, we need to update our `_units` dictionary. We instantly save it in the
+		# target cell even if the unit itself will take time to walk there.
+		# While it's walking, the player won't be able to issue new commands.
+		var _erased_unit = _units.erase(_active_unit.cell)
+		_units[new_cell] = _active_unit
 
 	# We also deselect it, clearing up the overlay and path.
 	_deselect_active_unit()
 	# We then ask the unit to walk along the path stored in the UnitPath instance and wait until it
 	# finished.
-	_active_unit.walk_along(_unit_path.current_path)
-	yield(_active_unit, "walk_finished")
+	if _active_unit.is_player:
+		_active_unit.walk_along(_unit_path.current_path)
+		yield(_active_unit, "walk_finished")
 	# Finally, we clear the `_active_unit`, which also clears the `_walkable_cells` array.
 	_clear_active_unit()
 

@@ -46,13 +46,10 @@ func _ready() -> void:
 
 	# The following lines generate an array of points filling the rectangle from rect_start to rect_end.
 	var points := []
-	# In a for loop, writing a number or expression that evaluates to a number after the "in" 
-	# keyword implicitly calls the range() function.
-	# For example, "for x in 3" is a shorthand for "for x in range(3)".
 	for x in rect_end.x - rect_start.x + 1:
 		for y in rect_end.y - rect_start.y + 1:
 			points.append(rect_start + Vector2(x, y))
 
 	# We can use the points to generate our PathFinder and draw a path.
 	initialize(points)
-	draw(rect_start, Vector2(8, 7))
+	# draw(rect_start, Vector2(8, 7))

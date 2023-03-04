@@ -20,6 +20,10 @@ export var skin: Texture setget set_skin
 export var skin_offset := Vector2.ZERO setget set_skin_offset
 # The unit's move speed in pixels, when it's moving along a path.
 export var move_speed := 600.0
+# The units hit points.
+export var hit_points :=10
+# Whether this is under the player's control
+export var is_player := false
 
 # Coordinates of the grid's cell the unit is on.
 var cell := Vector2.ZERO setget set_cell
